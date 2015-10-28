@@ -1,0 +1,280 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/*!
+ * CONTENTS
+ *
+ * SETTINGS
+ * variables......................变量集中存储文件
+ * mixin..........................mixin集中存储文件
+ * 
+ * TOOLS
+ *
+ * COMPONENTS
+ * reset..........................Compass内置浏览器重置样式文件
+ *
+ * BUSINESS
+ *
+ * BASE
+ * screen.scss....................针对当前站点主页的样式修饰
+ */
+
+@import "variables", "mixin";
+
+@import "compass/reset";
+@import "compass/css3";
+@import "compass/support";
+@import "compass/typography/links";
+@import "compass/typography/lists";
+@import "compass/typography/text";
+@import "compass/typography/vertical_rhythm";
+@import "compass/utilities/color";
+@import "compass/utilities/print";
+@import "compass/utilities/tables";
+@import "compass/utilities/general";
+
+//@import "icons";
+
+$browser-minimum-versions: ("ie": "8");
+
+@include print-utilities(screen);
+
+
+
+.test-inline-block {
+  @include inline-block();
+}
+
+.test-opacity {
+  @include opacity(.3);
+}
+
+
+// 主标题样式
+.headline {
+  font-family: $headline-ff;
+}
+
+/* 页面主体内容样式 */
+.main-sec {
+  font-family: $main-sec-ff;
+
+  @at-root {
+    .main-sec-headline {
+      font: {
+        family: $main-sec-ff;
+        size: 16px;
+      }
+    }
+
+    .main-sec-detail {
+      font-size: 12px;
+    }
+  }
+  
+}
+
+
+
+p {
+  color: hsl(270, 100%, 50%);
+}
+
+.webdemo-sec {
+  @include col-sm(50%);
+
+  // box-shadow: 1px 1px 3px 2px #cfcecf;
+  // -webkit-box-shadow: 1px 1px 3px 2px #cfcecf;
+  // -moz-box-shadow: 1px 1px 3px 2px #cfcecf;
+  @include box-shadow(1px 1px 3px 2px #cfcecf);
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+
+%error {
+  color: #f00;
+}
+.serious-error {
+  @extend %error;
+  border: 1px #f00;
+}
+
+.text-line-block {
+  display: block;
+}
+
+// #{$selector("p, div, span", ".bar")} {
+//   color: #000;
+// }
+
+.list-horizontal {
+  @include horizontal-list(false);
+}
+
+.list-inline-block {
+  @include inline-block-list(7px);
+}
+
+.text-force-wrap {
+  @include force-wrap();
+}
+
+.text-nowrap {
+  @include nowrap();
+}
+
+$use-mozilla-ellipsis-binding: true;
+.text-ellipsis {
+  @include ellipsis();
+}
+
+.text-hide {
+  @include squish-text();
+}
+
+// http://cdn.qq.com/images/find-btn.png
+.btn-find {
+  @include replace-text("http://cdn.qq.com/images/find-btn.png");
+}
+
+.goods-price {
+  $table-color: #7a98c6;
+
+  @include outer-table-borders();
+  @include inner-table-borders(1px, darken($table-color, 40%));
+
+  @include table-scaffolding();
+
+  @include alternating-rows-and-columns($table-color, adjust-hue($table-color, -120deg), #222222);
+}
+
+.clearfix {
+  @include legacy-pie-clearfix();
+}
+
+.pull-left {
+  @include float-left();
+}
+
+.need-has-layout {
+  @include has-layout();
+}
+
+// .underscore-hack-display {
+//   @include underscore-hack(display, block, inline);
+// }
+
+.test-min-height {
+  @include min-height(10px);
+}
+
+.tag-cloud-container {
+  @include tag-cloud(24px);
+}
+
+
+
+$list: twitter,facebook,github,weibo;
+// for $i from 1 through 12 包含12
+// for $i form 1 to 12 不包含12 
+@for $i from 1 through length($list){
+  .icon-#{nth($list,$i)}{
+    background-postion: 0 - 20px * $i;
+  }
+}
+// each
+$list: adam john wynn mason kuroir;
+
+@mixin author-images {
+	@each $author in $list {
+		.photo-#{$author} {
+			background: url("/image/#{$author}.png")
+		}
+	}
+}
+
+.author-bio {
+	@include author-images
+}
+//map
+
+$social-colors: (
+    dribble: #ea4c89,
+    facebook: #3b5998,
+    github: #171515,
+    google: #db4437,
+    twitter: #55acee
+);
+.btn-dribble{
+	// map-has-key($social-colors, facebook)  是否包含key
+	// map-keys($social-colors); 所有key
+	// map-values($social-colors);所有value
+	// map-remove($social-colors,dribble);
+  color: map-get($social-colors,facebook);
+}
+//遍历 map
+@each $social-network,$social-color in $social-colors {
+    .btn-#{$social-network} {
+        color: #{$social-color}
+    }
+}
+// 插值 #{}
+$properties: (margin, padding);
+@mixin set-value($side, $value) {
+    @each $prop in $properties {
+        #{$prop}-#{$side}: $value;
+    }
+}
+.login-box {
+    @include set-value(top, 14px);
+}
+
+@mixin generate-sizes($class, $small, $medium, $big) {
+    .#{$class}-small { font-size: $small; }
+    .#{$class}-medium { font-size: $medium; }
+    .#{$class}-big { font-size: $big; }
+}
+@include generate-sizes("header-text", 12px, 20px, 40px);
+
+// 不能使用的地方
+
+// $margin-big: 40px;
+// $margin-medium: 20px;
+// $margin-small: 12px;
+// @mixin set-value($size) {
+//     margin-top: $margin-#{$size};  //报错
+// }
+// .login-box {
+//     @include set-value(big);
+// }
+
+// @mixin updated-status {
+//     margin-top: 20px;
+//     background: #F00;
+// }
+// $flag: "status";
+// .navigation {
+//     @include updated-#{$flag};  //报错
+// }
+
+
+//可以用在 extend上
+%updated-status {
+    margin-top: 20px;
+    background: #F00;
+}
+.selected-status {
+    font-weight: bold;
+}
+$flag: "status";
+.navigation {
+    @extend %updated-#{$flag};
+    @extend .selected-#{$flag};
+}
+
+
+

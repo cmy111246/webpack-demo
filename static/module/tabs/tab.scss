@@ -1,0 +1,90 @@
+@import "compass/css3";
+@import "../../sass/mixin";
+ 
+
+$modal-border-offset: -20px;
+
+$modal-dialog-margin-top: 70px;
+$modal-dialog-width: 600px;
+$modal-dialog-radius: 5px;
+
+$modal-content-padding: 10px 20px;
+
+$modal-close-size: 50px;
+$modal-close-color: #DCDCDC;
+$modal-auto-close-color: #cccccc;
+
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #000;
+    @include opacity(0); //0.2
+}
+
+.modal {
+    display: none;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    outline: 0;
+    .modal-dialog {
+    	margin: auto;
+    	margin-top: $modal-dialog-margin-top;
+    	width: $modal-dialog-width;
+    	border-radius: $modal-dialog-radius;
+    	background-color: #ffffff;
+    	position: relative;
+		.modal-border {
+			position: absolute;
+			top: $modal-border-offset;
+			left: $modal-border-offset;
+			right: $modal-border-offset;
+			bottom: $modal-border-offset;
+			border-radius: $modal-border-offset * -1;
+			background-color: #ffffff;
+			@include opacity(0.2);
+		}
+		.modal-content {
+			position: relative;
+			padding: $modal-content-padding;
+			z-index: 2;
+			.modal-header {
+				@include clearfix();
+				h3 {
+					float: left;
+				}
+				.modal-close {
+					float: right;
+					border: none;
+					background-color: transparent;
+					font-size: $modal-close-size;
+					margin: 0;
+					padding: 0;
+					line-height: 1;
+					cursor: pointer;
+					color: $modal-close-color;
+				}
+			}
+			.modal-body {
+				.modal-auto-close {
+					text-align: center;
+					color: $modal-auto-close-color;
+					font-size: 12px;
+				}
+			}
+		}
+    }
+    &.modal-header-hide .modal-body{
+		padding: 100px;
+		text-align: center;
+    }
+}
