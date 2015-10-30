@@ -57,7 +57,7 @@ $.fn.tabs = function(option) {
       	if (!data) {
       		var data = new Tabs(this, options);
     		$this.data('dh.tabs', data);
-    		data.init();
+    		data._init();
       	}
   	})
 }
