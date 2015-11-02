@@ -13,17 +13,20 @@ class Tabs{
 	}
 	_autoRun(){
 		if(this.options.autoRun){
-			this.interval = setInterval(() =>{
-				this.index ++;
-				var len = this.$element.find(".J_tabs li").length;
-				if(this.index >= len){
-					this.index = 0;
-				}
-				console.log(this)
-				this._run();
-			},1000);
+			this._setInterval()
 			this._clearInterVal();
 		}
+	}
+	_setInterval(){
+		this.interval = setInterval(() =>{
+			this.index ++;
+			var len = this.$element.find(".J_tabs li").length;
+			if(this.index >= len){
+				this.index = 0;
+			}
+			console.log(this)
+			this._run();
+		},this.options.speed);
 	}
 	_run(){
 		var $navLi = this.$element.find(".J_tabs li");
@@ -41,10 +44,13 @@ class Tabs{
 	}	
 	_clearInterVal(){
 		this.$element.find(".J_tabs").on('mouseover', () => {
-			clearInterval(this.interval);
+			if(this.interval){
+				clearInterval(this.interval);
+				this.interval = null;
+			}
 		})
 		this.$element.find(".J_tabs").on('mouseout', () => {
-			this._autoRun();
+			this._setInterval();
 		})
 	}
 }
@@ -62,7 +68,8 @@ $.fn.tabs = function(option) {
   	})
 }
 $.fn.tabs.options = {
-	autoRun: false
+	autoRun: false,
+	speed: 2000
 }
 
 module.exports = Tabs;
