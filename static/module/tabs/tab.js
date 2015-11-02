@@ -4,6 +4,8 @@ class Tabs{
 	constructor(element, options) {
 		this.$element = $(element);
 		this.options = options;
+		this.tabObj = this.$element.find(this.options.tabObj);
+		this.tabBox = this.$element.find(this.options.tabBox);
 	}
 	_init(){
 		this.index = 0;
@@ -20,36 +22,35 @@ class Tabs{
 	_setInterval(){
 		this.interval = setInterval(() =>{
 			this.index ++;
-			var len = this.$element.find(".J_tabs li").length;
+			var len = this.tabBox.length;
 			if(this.index >= len){
 				this.index = 0;
 			}
-			console.log(this)
 			this._run();
 		},this.options.speed);
 	}
 	_run(){
-		var $navLi = this.$element.find(".J_tabs li");
-		var $box = this.$element.find(".J_tabs_box");
-		$navLi.removeClass(this.options.classNameVal).eq(this.index).addClass(this.options.classNameVal);
+		var $navLi = this.tabObj.children();
+		var $box = this.tabBox;
+		$navLi.removeClass(this.options.curClassName).eq(this.index).addClass(this.options.curClassName);
 		$box.addClass("disno").eq(this.index).removeClass('disno');
 	}
 	_click(){
 		var that = this;
-		this.$element.find(".J_tabs li").on('click', function(){
+		this.tabObj.children().on('click', function(){
 			var $this = $(this);
 			that.index = $this.index();
 			that._run();
 		})
 	}	
 	_clearInterVal(){
-		this.$element.find(".J_tabs").on('mouseover', () => {
+		this.tabObj.on('mouseover', () => {
 			if(this.interval){
 				clearInterval(this.interval);
 				this.interval = null;
 			}
 		})
-		this.$element.find(".J_tabs").on('mouseout', () => {
+		this.tabObj.on('mouseout', () => {
 			this._setInterval();
 		})
 	}
@@ -69,7 +70,10 @@ $.fn.tabs = function(option) {
 }
 $.fn.tabs.options = {
 	autoRun: false,
-	speed: 2000
+	speed: 2000,
+	tabObj: ".J_tabs",
+	curClassName: "cur",
+	tabBox: ".J_tabs_box"
 }
 
 module.exports = Tabs;
