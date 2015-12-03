@@ -1,5 +1,5 @@
 # webpack-demo
-webpack 编译es6 ==> es5 同时打包前端代码的案例
+webpack 编译es6 同时打包前端代码的案例
 
 ## 操作
 首先要求安装了node,然后进入目录 npm install 安装依赖包
